@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arsiparis Surat Digital - Sistem Manajemen Tata Usaha</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <i class="fas fa-school"></i>
+                <h1>Arsiparis Surat Digital</h1>
+                <p>Sistem Manajemen Tata Usaha Digital</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> Username
+                    </label>
+                    <input type="text" id="username" placeholder="Masukkan username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <input type="password" id="password" placeholder="Masukkan password" required>
+                </div>
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="main-app" style="display: none;">
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="logo">
+                        <i class="fas fa-school"></i>
+                        <h1>Arsiparis Surat Digital</h1>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="#" class="nav-item active" data-page="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="surat-masuk">
+                        <i class="fas fa-inbox"></i>
+                        <span>Surat Masuk</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="surat-keluar">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Surat Keluar</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="arsip">
+                        <i class="fas fa-archive"></i>
+                        <span>Arsip Digital</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="laporan">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Laporan</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="data-master">
+                        <i class="fas fa-database"></i>
+                        <span>Data Master</span>
+                    </a>
+                </nav>
+                <div class="header-right">
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userDisplay">Admin</span>
+                    </div>
+                    <button class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Dashboard Page -->
+                <div id="dashboardPage" class="page-content active">
+                    <div class="stats-grid">
+                        <div class="stat-card blue">
+                            <div class="stat-icon">
+                                <i class="fas fa-inbox"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="statSuratMasuk">0</h3>
+                                <p>Surat Masuk</p>
+                            </div>
+                        </div>
+                        <div class="stat-card green">
+                            <div class="stat-icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="statSuratKeluar">0</h3>
+                                <p>Surat Keluar</p>
+                            </div>
+                        </div>
+                        <div class="stat-card orange">
+                            <div class="stat-icon">
+                                <i class="fas fa-archive"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="statArsip">0</h3>
+                                <p>Arsip Digital</p>
+                            </div>
+                        </div>
+                        <div class="stat-card purple">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="statPegawai">0</h3>
+                                <p>Data Pegawai</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+                        <h2>Aksi Cepat</h2>
+                        <div class="action-buttons">
+                            <button class="action-btn" data-action="surat-masuk">
+                                <i class="fas fa-inbox"></i>
+                                <span>Input Surat Masuk</span>
+                            </button>
+                            <button class="action-btn" data-action="surat-keluar">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Input Surat Keluar</span>
+                            </button>
+                            <button class="action-btn" data-action="arsip">
+                                <i class="fas fa-upload"></i>
+                                <span>Upload Arsip</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h2>Aktivitas Terbaru</h2>
+                        <div id="recentActivityList" class="activity-list">
+                            <p class="no-data">Belum ada aktivitas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Surat Masuk Page -->
+                <div id="suratMasukPage" class="page-content">
+                    <div class="page-header">
+                        <h2>Manajemen Surat Masuk</h2>
+                        <button class="btn-primary" id="btnTambahSuratMasuk">
+                            <i class="fas fa-plus"></i> Tambah Surat Masuk
+                        </button>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <input type="text" id="searchSuratMasuk" placeholder="Cari nomor surat, pengirim, atau perihal...">
+                            <input type="month" id="filterBulanMasuk">
+                            <button class="btn-secondary" id="btnResetFilterMasuk">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nomor Surat</th>
+                                    <th>Tanggal</th>
+                                    <th>Pengirim</th>
+                                    <th>Perihal</th>
+                                    <th>File</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableSuratMasuk">
+                                <tr>
+                                    <td colspan="7" class="no-data">Belum ada data surat masuk</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Surat Keluar Page -->
+                <div id="suratKeluarPage" class="page-content">
+                    <div class="page-header">
+                        <h2>Manajemen Surat Keluar</h2>
+                        <button class="btn-primary" id="btnTambahSuratKeluar">
+                            <i class="fas fa-plus"></i> Tambah Surat Keluar
+                        </button>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <input type="text" id="searchSuratKeluar" placeholder="Cari nomor surat, tujuan, atau perihal...">
+                            <input type="month" id="filterBulanKeluar">
+                            <button class="btn-secondary" id="btnResetFilterKeluar">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nomor Surat</th>
+                                    <th>Tanggal</th>
+                                    <th>Tujuan</th>
+                                    <th>Perihal</th>
+                                    <th>Jenis</th>
+                                    <th>File</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableSuratKeluar">
+                                <tr>
+                                    <td colspan="8" class="no-data">Belum ada data surat keluar</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Buat Surat Page -->
+                <div id="buatSuratPage" class="page-content">
+                    <div class="page-header">
+                        <h2>Buat Surat Otomatis</h2>
+                        <button class="btn-secondary" onclick="resetFormSurat()">
+                            <i class="fas fa-redo"></i> Reset Form
+                        </button>
+                    </div>
+
+                    <div class="surat-builder-container">
+                        <div class="surat-form-panel">
+                            <div class="form-selector">
+                                <label><i class="fas fa-file-alt"></i> Pilih Jenis Surat</label>
+                                <select id="jenisSurat" class="form-control">
+                                    <option value="">-- Pilih Jenis Surat --</option>
+                                    <option value="aktif">Surat Keterangan Aktif Sekolah</option>
+                                    <option value="tugas">Surat Tugas</option>
+                                    <option value="undangan">Surat Undangan</option>
+                                    <option value="izin">Surat Izin</option>
+                                    <option value="rekomendasi">Surat Rekomendasi</option>
+                                    <option value="keterangan">Surat Keterangan Lainnya</option>
+                                </select>
+                            </div>
+
+                            <div id="formSuratDynamic" class="dynamic-form">
+                                <div class="info-placeholder">
+                                    <i class="fas fa-hand-pointer"></i>
+                                    <p>Silakan pilih jenis surat terlebih dahulu</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="surat-preview-panel">
+                            <div class="preview-header">
+                                <i class="fas fa-eye"></i> Preview Surat
+                            </div>
+                            <div id="suratPreviewContainer" class="preview-a4-container">
+                                <div class="preview-placeholder">
+                                    <i class="fas fa-file-alt"></i>
+                                    <p>Preview surat akan muncul di sini</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arsip Digital Page -->
+                <div id="arsipPage" class="page-content">
+                    <div class="page-header">
+                        <h2>Arsip Digital</h2>
+                        <button class="btn-primary" id="btnUploadArsip">
+                            <i class="fas fa-upload"></i> Upload Dokumen
+                        </button>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <input type="text" id="searchArsip" placeholder="Cari nama dokumen...">
+                            <select id="filterKategori" class="form-control">
+                                <option value="">Semua Kategori</option>
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="arsip-grid" id="arsipGrid">
+                        <p class="no-data">Belum ada arsip digital</p>
+                    </div>
+                </div>
+
+                <!-- Laporan Page -->
+                <div id="laporanPage" class="page-content">
+                    <!-- Print Header (Only visible when printing) -->
+                    <div id="printHeader" class="print-header" style="display: none;">
+                        <div class="print-header-content">
+                            <h1 class="print-title">LAPORAN REKAP SURAT</h1>
+                            <h2 class="print-year" id="printYear">TAHUN 2024</h2>
+                            <p class="print-period" id="printPeriod">Periode: Jan 2024 s/d Des 2024</p>
+                        </div>
+                        <hr class="print-divider">
+                    </div>
+
+                    <div class="page-header">
+                        <h2>Laporan & Statistik</h2>
+                        <div class="header-actions">
+                            <button class="btn-success" id="btnExportExcel">
+                                <i class="fas fa-file-excel"></i> Export Excel
+                            </button>
+                            <button class="btn-primary" id="btnCetakLaporan">
+                                <i class="fas fa-print"></i> Cetak
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Section -->
+                    <div class="filter-section laporan-filter">
+                        <div class="filter-row">
+                            <div class="filter-item filter-item-full">
+                                <label><i class="fas fa-filter"></i> Jenis Laporan</label>
+                                <select id="filterJenisLaporan" class="form-control">
+                                    <option value="">-- Pilih Jenis Laporan --</option>
+                                    <option value="surat-masuk">Laporan Surat Masuk</option>
+                                    <option value="surat-keluar">Laporan Surat Keluar</option>
+                                    <option value="arsip">Laporan Arsip Digital</option>
+                                    <option value="rekapitulasi">Rekapitulasi Bulanan</option>
+                                    <option value="statistik">Statistik Tahunan</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-row">
+                            <div class="filter-item">
+                                <label><i class="fas fa-calendar-alt"></i> Periode Dari</label>
+                                <input type="month" id="filterPeriodeDari" class="form-control" placeholder="Dari">
+                            </div>
+                            
+                            <div class="filter-item">
+                                <label><i class="fas fa-calendar-check"></i> Periode Sampai</label>
+                                <input type="month" id="filterPeriodeSampai" class="form-control" placeholder="Sampai">
+                            </div>
+                        </div>
+                        
+                        <div class="filter-row filter-actions">
+                            <button class="btn-primary" id="btnTampilkanLaporan">
+                                <i class="fas fa-search"></i> Tampilkan Laporan
+                            </button>
+                            <button class="btn-secondary" id="btnResetLaporan">
+                                <i class="fas fa-redo"></i> Reset Filter
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Summary -->
+                    <div id="laporanStatistik" class="stats-grid" style="display: none;">
+                        <div class="stat-card blue">
+                            <div class="stat-icon">
+                                <i class="fas fa-inbox"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="statLaporanMasuk">0</h3>
+                                <p>Total Surat Masuk</p>
+                                <small id="periodeMasuk">-</small>
+                            </div>
+                        </div>
+                        <div class="stat-card green">
+                            <div class="stat-icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="statLaporanKeluar">0</h3>
+                                <p>Total Surat Keluar</p>
+                                <small id="periodeKeluar">-</small>
+                            </div>
+                        </div>
+                        <div class="stat-card orange">
+                            <div class="stat-icon">
+                                <i class="fas fa-archive"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="statLaporanArsip">0</h3>
+                                <p>Total Arsip</p>
+                                <small id="periodeArsip">-</small>
+                            </div>
+                        </div>
+                        <div class="stat-card purple">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="statLaporanTotal">0</h3>
+                                <p>Total Dokumen</p>
+                                <small id="periodeTotal">-</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart Section -->
+                    <div id="laporanChart" class="chart-section" style="display: none;">
+                        <div class="chart-container">
+                            <h3><i class="fas fa-chart-bar"></i> Grafik Statistik</h3>
+                            <div class="chart-tabs">
+                                <button class="chart-tab-btn active" data-chart="bar">
+                                    <i class="fas fa-chart-bar"></i> Bar Chart
+                                </button>
+                                <button class="chart-tab-btn" data-chart="line">
+                                    <i class="fas fa-chart-line"></i> Line Chart
+                                </button>
+                                <button class="chart-tab-btn" data-chart="pie">
+                                    <i class="fas fa-chart-pie"></i> Pie Chart
+                                </button>
+                            </div>
+                            <div id="chartCanvas" class="chart-canvas">
+                                <canvas id="laporanChartElement"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Report Table -->
+                    <div id="laporanTable" class="table-section" style="display: none;">
+                        <div class="page-header">
+                            <h3 id="laporanTableTitle">Data Laporan</h3>
+                            <div class="table-actions">
+                                <input type="text" id="searchLaporan" placeholder="Cari dalam laporan..." class="form-control">
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead id="laporanTableHead">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Tanggal</th>
+                                        <th>Nomor Surat</th>
+                                        <th>Perihal</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="laporanTableBody">
+                                    <tr>
+                                        <td colspan="5" class="no-data">Belum ada data</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <div class="table-info">
+                                <span>Menampilkan <strong id="laporanShowingCount">0</strong> dari <strong id="laporanTotalCount">0</strong> data</span>
+                            </div>
+                            <div class="pagination" id="laporanPagination">
+                                <!-- Pagination buttons will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="laporanEmpty" class="info-placeholder">
+                        <i class="fas fa-chart-bar"></i>
+                        <p>Pilih jenis laporan dan periode untuk menampilkan data</p>
+                        <small>Gunakan filter di atas untuk menghasilkan laporan</small>
+                    </div>
+                </div>
+
+                <!-- Data Master Page -->
+                <div id="dataMasterPage" class="page-content">
+                    <div class="page-header">
+                        <h2>Data Master</h2>
+                        <div class="header-actions">
+                            <button class="btn-success" id="btnBackupData">
+                                <i class="fas fa-download"></i> Backup Data
+                            </button>
+                            <button class="btn-primary" id="btnImportData">
+                                <i class="fas fa-upload"></i> Import Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="pegawai">Data Pegawai</button>
+                        <button class="tab-btn" data-tab="nomor">Nomor Surat</button>
+                        <button class="tab-btn" data-tab="admin">Data Admin</button>
+                    </div>
+
+                    <!-- Tab Pegawai -->
+                    <div id="tabPegawai" class="tab-content active">
+                        <div class="page-header">
+                            <h3>Data Pegawai</h3>
+                            <button class="btn-primary" id="btnTambahPegawai">
+                                <i class="fas fa-plus"></i> Tambah Pegawai
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>NIP</th>
+                                        <th>Nama</th>
+                                        <th>Jabatan</th>
+                                        <th>Pangkat/Golongan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablePegawai">
+                                    <tr>
+                                        <td colspan="6" class="no-data">Belum ada data pegawai</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab Nomor Surat -->
+                    <div id="tabNomor" class="tab-content">
+                        <div class="page-header">
+                            <h3>Manajemen Nomor Surat</h3>
+                            <button class="btn-primary" id="btnTambahNomorSurat">
+                                <i class="fas fa-plus"></i> Tambah Nomor Surat
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nomor Surat</th>
+                                        <th>Jenis Surat</th>
+                                        <th>Tanggal Dibuat</th>
+                                        <th>Status</th>
+                                        <th>Keterangan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableNomorSurat">
+                                    <tr>
+                                        <td colspan="7" class="no-data">Belum ada data nomor surat</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab Data Admin -->
+                    <div id="tabAdmin" class="tab-content">
+                        <div class="page-header">
+                            <h3>Data Administrator</h3>
+                            <button class="btn-primary" id="btnTambahAdmin">
+                                <i class="fas fa-plus"></i> Tambah Admin
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Username</th>
+                                        <th>Nama</th>
+                                        <th>Role</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableAdmin">
+                                    <tr>
+                                        <td colspan="5" class="no-data">Belum ada data admin</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Container -->
+    <div id="modalContainer"></div>
+
+    <!-- Dexie.js Library for IndexedDB -->
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+    
+    <!-- IndexedDB Setup -->
+    <script src="db-indexeddb.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="app-utils.js"></script>
+    <script src="app.js"></script>
+    <script src="app-laporan.js"></script>
+    
+    <!-- IndexedDB Integration (Override localStorage functions) -->
+    <script src="app-indexeddb-integration.js"></script>
+</body>
+</html>
